@@ -8,8 +8,11 @@ defmodule CipherSuites.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
+     name: "CipherSuites",
      description: description(),
-     package: package()
+     package: package(),
+     docs: [main: CipherSuites],
+     source_url: "https://github.com/voltone/cipher_suites"
     ]
   end
 
@@ -30,7 +33,9 @@ defmodule CipherSuites.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:ex_doc, "~> 0.12.0", only: :dev}
+    ]
   end
 
 

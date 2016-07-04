@@ -1,13 +1,15 @@
 defmodule CipherSuites do
   @moduledoc """
-  Support OpenSSL-style cipher suite selection in Erlang/Elixir application.
+  Support OpenSSL-style cipher suite selection in Erlang/Elixir applications.
   """
 
   @doc """
   Applies the specified OpenSSL cipher selection string to the list of known
-  cipher suites and returns the resulting list. The result can be used in
-  the `:ciphers` option for `:ssl` client and server connections, as well as
-  in most TLS-capable applications, such as Ranch, Cowboy, Plug and Phoenix.
+  cipher suites and returns the resulting list.
+
+  The result can be used in the `:ciphers` option for `:ssl` client and
+  server connections, as well as in most TLS-capable applications, such as
+  Ranch, Cowboy, Plug and Phoenix.
 
   Example:
 
@@ -27,9 +29,7 @@ defmodule CipherSuites do
   end
 
   @doc """
-  Returns all known cipher suites, as reported by the `:ssl` module. The list
-  can be overridden using the `:cipher_suites` application's `:all_suites`
-  configuration option. See `config/test.exs` for an example.
+  Returns all known cipher suites, as reported by the `:ssl` module.
 
   Note that this function returns all known cipher suites, including null
   ciphers, which is different from what `select("ALL")` returns!
@@ -40,9 +40,7 @@ defmodule CipherSuites do
   end
 
   @doc """
-  Returns the default cipher suites, as reported by the `:ssl` module. The list
-  can be overridden using the `:cipher_suites` application's `:default_suites`
-  configuration option. See `config/test.exs` for an example.
+  Returns the default cipher suites, as reported by the `:ssl` module.
   """
   @spec default() :: [:ssl.ciphersuite]
   def default do
