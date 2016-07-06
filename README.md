@@ -3,7 +3,7 @@
 Select and sort the cipher suites for an Erlang/Elixir application using
 the widely used OpenSSL syntax.
 
-When looking for advise on how to improve the security and performance of an
+When looking for advice on how to improve the security and performance of an
 SSL/TLS server, you'll often come across instructions for applications such as
 Apache, Nginx, HAProxy. Odds are, they include a cipher suite recommendation
 looking something like this:
