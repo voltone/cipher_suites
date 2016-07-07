@@ -15,6 +15,14 @@ a cipher list that Erlang's `:ssl` module understands. This library offers
 a function to do exactly that:
 [CipherSuites.select/1](https://hexdocs.pm/cipher_suites/CipherSuites.html#select/1)
 
+## Example
+
+```elixir
+iex> CipherSuites.select("aRSA+kEECDH+AES256:!SHA")
+[{:ecdhe_rsa, :aes_256_gcm, :null, :sha384},
+ {:ecdhe_rsa, :aes_256_cbc, :sha384, :sha384}]
+```
+
 ## Documentation
 
 Full documentation is available [here](http://hexdocs.pm/cipher_suites/).
