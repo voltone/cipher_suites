@@ -2,17 +2,18 @@ defmodule CipherSuites.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :cipher_suites,
-     version: "0.1.0",
-     elixir: "~> 1.2",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps(),
-     name: "CipherSuites",
-     description: description(),
-     package: package(),
-     docs: [main: CipherSuites],
-     source_url: "https://github.com/voltone/cipher_suites"
+    [
+      app: :cipher_suites,
+      version: "0.2.0",
+      elixir: "~> 1.4",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      name: "CipherSuites",
+      description: description(),
+      package: package(),
+      docs: [main: CipherSuites],
+      source_url: "https://github.com/voltone/cipher_suites"
     ]
   end
 
@@ -34,10 +35,9 @@ defmodule CipherSuites.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ex_doc, "~> 0.12.0", only: :dev}
+      {:ex_doc, "~> 0.18.3", only: :dev}
     ]
   end
-
 
   defp description do
     """
@@ -47,9 +47,10 @@ defmodule CipherSuites.Mixfile do
   end
 
   defp package do
-    [maintainers: ["Bram Verburg"],
-     licenses: ["BSD 3-Clause"],
-     links: %{"GitHub" => "https://github.com/voltone/cipher_suites"}]
+    [
+      maintainers: ["Bram Verburg"],
+      licenses: ["BSD 3-Clause"],
+      links: %{"GitHub" => "https://github.com/voltone/cipher_suites"}
+    ]
   end
-
 end

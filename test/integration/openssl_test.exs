@@ -10,20 +10,22 @@ defmodule CipherSuites.OpenSSLTest do
   setup_all do
     all = openssl_ciphers("ALL:COMPLEMENTOFALL")
     default = openssl_ciphers("DEFAULT")
-    if (all == []) or (default == []) do
+
+    if all == [] or default == [] do
       raise "Could not get cipher list from OpenSSL; please make sure\n" <>
-        "the openssl binary is available and supports the -V option " <>
-        "for the\n`ciphers` command"
+              "the openssl binary is available and supports the -V option " <>
+              "for the\n`ciphers` command"
     end
 
     # Remember original cipher suite settings and restore them when done
     # with OpenSSL integration testing
     orig_all = Application.get_env(:cipher_suites, :all_suites)
     orig_default = Application.get_env(:cipher_suites, :default_suites)
-    on_exit fn ->
+
+    on_exit(fn ->
       Application.put_env(:cipher_suites, :all_suites, orig_all)
       Application.put_env(:cipher_suites, :default_suites, orig_default)
-    end
+    end)
 
     # Set up the cipher suites to match what OpenSSL offers, to be able
     # to compare the results produced by CipherSuites and OpenSSL's CLI
@@ -33,20 +35,64 @@ defmodule CipherSuites.OpenSSLTest do
 
   @cases [
     # All keywords from OpenSSL man page
-    "DEFAULT", "ALL", "COMPLEMENTOFDEFAULT", "COMPLEMENTOFALL",
-    "HIGH", "MEDIUM", "LOW",
-    "eNULL", "NULL", "aNULL",
-    "RSA", "kRSA", "aRSA", "kDHE", "kEDH", "DH", "DHE", "EDH", "ADH",
-    "kEECDH", "kECDHE", "ECDH", "ECDHE", "EECDH", "AECDH", "aDSS", "DSS",
-    "aDH", "aECDSA", "ECDSA",
-    "SSLv3", "TLSv1.0", "TLSv1.2",
-    "AES128", "AES256", "AES", "AESGCM", "3DES", "DES", "RC4", "IDEA",
-    "MD5", "SHA1", "SHA", "SHA256", "SHA384",
-    "kPSK", "PSK", "kDHEPSK", "kRSAPSK", "aPSK",
-    "kSRP", "SRP", "aSRP",
+    "DEFAULT",
+    "ALL",
+    "COMPLEMENTOFDEFAULT",
+    "COMPLEMENTOFALL",
+    "HIGH",
+    "MEDIUM",
+    "LOW",
+    "eNULL",
+    "NULL",
+    "aNULL",
+    "RSA",
+    "kRSA",
+    "aRSA",
+    "kDHE",
+    "kEDH",
+    "DH",
+    "DHE",
+    "EDH",
+    "ADH",
+    "kEECDH",
+    "kECDHE",
+    "ECDH",
+    "ECDHE",
+    "EECDH",
+    "AECDH",
+    "aDSS",
+    "DSS",
+    "aDH",
+    "aECDSA",
+    "ECDSA",
+    "SSLv3",
+    "TLSv1.0",
+    "TLSv1.2",
+    "AES128",
+    "AES256",
+    "AES",
+    "AESGCM",
+    "3DES",
+    "DES",
+    "RC4",
+    "IDEA",
+    "MD5",
+    "SHA1",
+    "SHA",
+    "SHA256",
+    "SHA384",
+    "kPSK",
+    "PSK",
+    "kDHEPSK",
+    "kRSAPSK",
+    "aPSK",
+    "kSRP",
+    "SRP",
+    "aSRP",
 
     # OpenSSL suite names
-    "ECDHE-RSA-AES256-SHA", "ECDHE-RSA-AES256-GCM-SHA384",
+    "ECDHE-RSA-AES256-SHA",
+    "ECDHE-RSA-AES256-GCM-SHA384",
     "SRP-RSA-3DES-EDE-CBC-SHA",
 
     # Test cases from CipherSuitesTest
@@ -62,20 +108,21 @@ defmodule CipherSuites.OpenSSLTest do
     "DEFAULT:+MEDIUM",
     "RSA+AES",
     "aRSA+AES:-SRP",
-    "DES:3DES:AES128:AES256:CHACHA20:@STRENGTH",
+    "DES:3DES:AES128:AES256:CHACHA20:@STRENGTH"
   ]
 
-  Enum.each @cases, fn(statement) ->
+  Enum.each(@cases, fn statement ->
     @statement statement
     test @statement do
       assert CipherSuites.select(@statement) == openssl_ciphers(@statement)
     end
-  end
+  end)
 
   # Helpers
 
   defp openssl_ciphers(filter) do
     openssl = Application.get_env(:cipher_suites, :openssl_cmd, "openssl")
+
     :os.cmd('#{openssl} ciphers -V #{filter}')
     |> to_string
     |> String.split("\n")
@@ -85,13 +132,18 @@ defmodule CipherSuites.OpenSSLTest do
 
   defp openssl_parse_cipher(line) do
     case Regex.run(~r/0x([0-9A-F]{2}),0x([0-9A-F]{2})/, line) do
-      nil -> nil
+      nil ->
+        nil
+
       [_, hi, lo] ->
-        :ssl_cipher.suite_definition(Base.decode16!(hi) <> Base.decode16!(lo))
+        %{key_exchange: key_exchange, cipher: cipher, mac: mac, prf: prf} =
+          :ssl_cipher.suite_definition(Base.decode16!(hi) <> Base.decode16!(lo))
+
+        {key_exchange, cipher, mac, prf}
     end
   rescue
     # ignore OpenSSL cipher not supported by Erlang.OTP
-    FunctionClauseError -> nil
+    FunctionClauseError ->
+      nil
   end
-
 end
