@@ -136,10 +136,13 @@ defmodule CipherSuites.OpenSSLTest do
         nil
 
       [_, hi, lo] ->
-        %{key_exchange: key_exchange, cipher: cipher, mac: mac, prf: prf} =
-          :ssl_cipher.suite_definition(Base.decode16!(hi) <> Base.decode16!(lo))
+        case :ssl_cipher.suite_definition(Base.decode16!(hi) <> Base.decode16!(lo)) do
+          %{key_exchange: key_exchange, cipher: cipher, mac: mac, prf: prf} ->
+            {key_exchange, cipher, mac, prf}
 
-        {key_exchange, cipher, mac, prf}
+          tuple ->
+            tuple
+        end
     end
   rescue
     # ignore OpenSSL cipher not supported by Erlang.OTP

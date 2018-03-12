@@ -378,13 +378,19 @@ defmodule CipherSuites do
   end
 
   defp openssl_suite(cipher_name) do
-    %{key_exchange: key_exchange, cipher: cipher, mac: mac, prf: prf} =
+    definition =
       cipher_name
       |> String.to_charlist()
       |> :ssl_cipher.openssl_suite()
       |> :ssl_cipher.suite_definition()
 
-    {key_exchange, cipher, mac, prf}
+    case definition do
+      %{key_exchange: key_exchange, cipher: cipher, mac: mac, prf: prf} ->
+        {key_exchange, cipher, mac, prf}
+
+      tuple ->
+        tuple
+    end
   rescue
     FunctionClauseError -> nil
   end
