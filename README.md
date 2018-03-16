@@ -29,17 +29,13 @@ Full documentation is available [here](http://hexdocs.pm/cipher_suites/).
 
 ## Installation
 
-Install using [Hex](https://hex.pm/):
+The package is [available in Hex](https://hex.pm/packages/cipher_suites) and can be installed
+by adding `cipher_suites` to your list of dependencies in `mix.exs`:
 
-  1. Add cipher_suites to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:cipher_suites, "~> 0.1.0"}]
-        end
-
-  2. Ensure cipher_suites is also specified as an application dependency, to
-     ensure proper release packaging:
-
-        def application do
-          [applications: [:cipher_suites]]
-        end
+```elixir
+def deps do
+  [
+    {:cipher_suites, "~> 0.2.1"}
+  ]
+end
+```
