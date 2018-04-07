@@ -14,7 +14,7 @@ defmodule CipherSuites do
   Example:
 
       iex> CipherSuites.select("aRSA+kEECDH+AES256:!SHA")
-      [{:ecdhe_rsa, :aes_256_gcm, :null, :sha384},
+      [{:ecdhe_rsa, :aes_256_gcm, :aead, :sha384},
        {:ecdhe_rsa, :aes_256_cbc, :sha384, :sha384}]
 
   Please refer to the

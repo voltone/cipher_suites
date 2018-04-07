@@ -1,5 +1,10 @@
 ## Changelog
 
+## v0.3.0
+
+* Tests updated for Erlang/OTP 20.3. Note that some tests now fail on older
+  OTP versions, but the library works as before
+
 ## v0.2.0
 
 * Added `CipherSuites.init_phoenix_endpoint/1` and removed

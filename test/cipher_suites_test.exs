@@ -15,14 +15,14 @@ defmodule CipherSuitesTest do
 
   test "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA" do
     assert CipherSuites.select("ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA") == [
-             {:ecdhe_rsa, :aes_256_gcm, :null, :sha384},
+             {:ecdhe_rsa, :aes_256_gcm, :aead, :sha384},
              {:ecdhe_rsa, :aes_256_cbc, :sha, :default_prf}
            ]
   end
 
   test "aRSA+kEDH+AES256" do
     assert CipherSuites.select("aRSA+kEDH+AES256") == [
-             {:dhe_rsa, :aes_256_gcm, :null, :sha384},
+             {:dhe_rsa, :aes_256_gcm, :aead, :sha384},
              {:dhe_rsa, :aes_256_cbc, :sha256},
              {:dhe_rsa, :aes_256_cbc, :sha}
            ]
@@ -30,7 +30,7 @@ defmodule CipherSuitesTest do
 
   test "aRSA+kEDH+AES256:-SSLv3" do
     assert CipherSuites.select("aRSA+kEDH+AES256:-SSLv3") == [
-             {:dhe_rsa, :aes_256_gcm, :null, :sha384},
+             {:dhe_rsa, :aes_256_gcm, :aead, :sha384},
              {:dhe_rsa, :aes_256_cbc, :sha256}
            ]
   end
@@ -117,7 +117,7 @@ defmodule CipherSuitesTest do
     assert [
              https: [
                ciphers: [
-                 {:dhe_rsa, :aes_256_gcm, :null, :sha384},
+                 {:dhe_rsa, :aes_256_gcm, :aead, :sha384},
                  {:dhe_rsa, :aes_256_cbc, :sha256},
                  {:dhe_rsa, :aes_256_cbc, :sha}
                ]
@@ -126,11 +126,11 @@ defmodule CipherSuitesTest do
 
     assert [
              https: [
-               ciphers: [{:dhe_rsa, :aes_256_gcm, :null, :sha384}]
+               ciphers: [{:dhe_rsa, :aes_256_gcm, :aead, :sha384}]
              ]
            ] ==
              CipherSuites.init_phoenix_endpoint(
-               https: [ciphers: [{:dhe_rsa, :aes_256_gcm, :null, :sha384}]]
+               https: [ciphers: [{:dhe_rsa, :aes_256_gcm, :aead, :sha384}]]
              )
 
     assert [https: [port: 443]] == CipherSuites.init_phoenix_endpoint(https: [port: 443])
