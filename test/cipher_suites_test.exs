@@ -20,6 +20,13 @@ defmodule CipherSuitesTest do
            ]
   end
 
+  test "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305" do
+    assert CipherSuites.select("ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305") == [
+             {:ecdhe_ecdsa, :chacha20_poly1305, :aead, :sha256},
+             {:ecdhe_rsa, :chacha20_poly1305, :aead, :sha256}
+           ]
+  end
+
   test "aRSA+kEDH+AES256" do
     assert CipherSuites.select("aRSA+kEDH+AES256") == [
              {:dhe_rsa, :aes_256_gcm, :aead, :sha384},

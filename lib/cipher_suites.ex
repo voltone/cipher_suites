@@ -106,6 +106,15 @@ defmodule CipherSuites do
     chacha20_poly1305: 256
   }
 
+  @more_openssl_suites %{
+    # TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+    "ECDHE-RSA-CHACHA20-POLY1305" => {:ecdhe_rsa, :chacha20_poly1305, :aead, :sha256},
+    # TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+    "ECDHE-ECDSA-CHACHA20-POLY1305" => {:ecdhe_ecdsa, :chacha20_poly1305, :aead, :sha256},
+    # TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+    "DHE-RSA-CHACHA20-POLY1305" => {:dhe_rsa, :chacha20_poly1305, :aead, :sha256}
+  }
+
   # DEFAULT: "When used, this must be the first cipherstring specified.
   # This [...] is normally ALL:!COMPLEMENTOFDEFAULT:!eNULL".
   defp filter(["DEFAULT" | tokens]) do
@@ -392,6 +401,7 @@ defmodule CipherSuites do
         tuple
     end
   rescue
-    FunctionClauseError -> nil
+    FunctionClauseError ->
+      Map.get(@more_openssl_suites, cipher_name)
   end
 end

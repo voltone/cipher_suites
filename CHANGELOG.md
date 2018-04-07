@@ -4,6 +4,8 @@
 
 * Tests updated for Erlang/OTP 20.3. Note that some tests now fail on older
   OTP versions, but the library works as before
+* Add support for some fully specified ChaCha20-Poly1305 suites, which are not
+  (currently) recognized by name by Erlang/OTP
 
 ## v0.2.0
 
