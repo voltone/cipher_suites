@@ -1,6 +1,8 @@
 defmodule CipherSuites.OpenSSLTest do
   use ExUnit.Case
 
+  require Logger
+
   # Integration testing with OpenSSL's CLI. Make sure the `openssl`
   # binary exists in your $PATH, or that you specify its full path
   # using the :openssl_cmd configuration for your test environment.
@@ -16,6 +18,8 @@ defmodule CipherSuites.OpenSSLTest do
               "the openssl binary is available and supports the -V option " <>
               "for the\n`ciphers` command"
     end
+
+    Logger.info("Using #{openssl_version()}")
 
     # Remember original cipher suite settings and restore them when done
     # with OpenSSL integration testing
@@ -119,6 +123,13 @@ defmodule CipherSuites.OpenSSLTest do
   end)
 
   # Helpers
+
+  defp openssl_version do
+    openssl = Application.get_env(:cipher_suites, :openssl_cmd, "openssl")
+
+    :os.cmd('#{openssl} version')
+    |> to_string
+  end
 
   defp openssl_ciphers(filter) do
     openssl = Application.get_env(:cipher_suites, :openssl_cmd, "openssl")
