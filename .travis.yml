@@ -1,5 +1,11 @@
 language: elixir
 sudo: false
+
+addons:
+  apt:
+    packages:
+      - openssl
+
 script: mix test --include openssl
 matrix:
   include:
